@@ -1,9 +1,9 @@
 ﻿using System;
 using GoodsLogistics.Models.DTO.UserCompany;
 
-namespace GoodsLogistics.Models.DTO
+namespace GoodsLogistics.ViewModels.DTO
 {
-    public class ObjectiveModel
+    public class ObjectiveViewModel
     {
         public string ObjectiveId { get; set; }
 
@@ -18,9 +18,5 @@ namespace GoodsLogistics.Models.DTO
         public DateTime StartTime { get; set; }
 
         public DateTime EndTime { get; set; }
-
-        public DateTime CreationDate { get; set; }
-
-        public bool IsRemoved { get; set; }
     }
 }

@@ -11,7 +11,9 @@ namespace GoodsLogistics.DI.Projects
         {
             var automapperProfiles = new Type[]
             {
-                typeof(UserCompanyProfile)
+                typeof(UserCompanyProfile),
+                typeof(OfficeProfile),
+                typeof(ObjectiveProfile)
             };
 
             services.AddAutoMapper(automapperProfiles);

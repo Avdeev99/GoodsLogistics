@@ -1,5 +1,5 @@
 ﻿using System.Threading;
-using GoodsLogistics.Models.DTO;
+using GoodsLogistics.Models.DTO.UserCompany;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GoodsLogistics.BLL.Services.Interfaces
@@ -18,10 +18,19 @@ namespace GoodsLogistics.BLL.Services.Interfaces
 
         ObjectResult UpdateUserCompany(
             string email,
+            UserCompanyUpdateRequestModel updateRequestModel,
             CancellationToken cancellationToken = default);
 
         ObjectResult DeleteUserCompany(
             string email,
+            CancellationToken cancellationToken = default);
+
+        ObjectResult RegisterUserCompany(
+            UserCompanyModel userCompany,
+            CancellationToken cancellationToken = default);
+
+        ObjectResult LoginUserCompany(
+            UserCompanyLoginRequestModel loginRequestModel,
             CancellationToken cancellationToken = default);
     }
 }

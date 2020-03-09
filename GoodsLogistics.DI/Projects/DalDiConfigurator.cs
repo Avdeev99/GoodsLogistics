@@ -21,8 +21,8 @@ namespace GoodsLogistics.DI.Projects
 
             services.AddDbContext<GoodsLogisticsContext>(options => options.UseSqlServer(sqlServerDbOptions.ConnectionString));
 
-            services.AddSingleton(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-            services.AddSingleton<IUnitOfWork, UnitOfWork>();
+            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddSingleton<IRepositoryFactory, RepositoryFactory>();
         }
     }

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using GoodsLogistics.Models.DTO.Office;
 
-namespace GoodsLogistics.Models.DTO
+namespace GoodsLogistics.Models.DTO.UserCompany
 {
     public class UserCompanyModel
     {

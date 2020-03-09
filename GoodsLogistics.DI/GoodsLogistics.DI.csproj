@@ -13,8 +13,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\GoodsLogistics.Auth\GoodsLogistics.Auth.csproj" />
     <ProjectReference Include="..\GoodsLogistics.Automapper\GoodsLogistics.Automapper.csproj" />
+    <ProjectReference Include="..\GoodsLogistics.BLL\GoodsLogistics.BLL.csproj" />
     <ProjectReference Include="..\GoodsLogistics.DAL\GoodsLogistics.DAL.csproj" />
+    <ProjectReference Include="..\GoodsLogistics.Infrastructure\GoodsLogistics.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>

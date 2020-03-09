@@ -16,7 +16,12 @@ namespace GoodsLogistics.DAL.Factories
 
         public IGenericRepository<T> GetRepositoryInstance<T>() where T : class
         {
-            return _serviceProvider.GetRequiredService<IGenericRepository<T>>();
+            var serviceScope = _serviceProvider
+                .GetRequiredService<IServiceScopeFactory>()
+                .CreateScope();
+
+            var repository = serviceScope.ServiceProvider.GetService<IGenericRepository<T>>();
+            return repository;
         }
     }
 }

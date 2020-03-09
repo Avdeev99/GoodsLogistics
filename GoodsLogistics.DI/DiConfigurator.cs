@@ -8,9 +8,15 @@ namespace GoodsLogistics.DI
     {
         public static void Configure(IServiceCollection services, IConfiguration configuration)
         {
+            ApiDiConfigurator.Configure(services, configuration);
+
+            AuthDiConfigurator.Configure(services);
+
             DalDiConfigurator.Configure(services, configuration);
 
             AutomapperDiConfigurator.Configure(services);
+
+            BllDiConfigurator.Configure(services);
         }
     }
 }

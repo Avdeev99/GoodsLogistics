@@ -22,6 +22,8 @@ namespace GoodsLogistics.Api
         {
             DiConfigurator.Configure(services, Configuration);
 
+            AuthConfigurator.Configure(services, Configuration);
+
             services
                 .AddControllers()
                 .SetCompatibilityVersion(CompatibilityVersion.Latest);
