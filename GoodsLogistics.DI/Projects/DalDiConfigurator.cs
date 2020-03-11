@@ -23,7 +23,7 @@ namespace GoodsLogistics.DI.Projects
 
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddSingleton<IRepositoryFactory, RepositoryFactory>();
+            services.AddScoped<IRepositoryFactory, RepositoryFactory>();
         }
     }
 }

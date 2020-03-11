@@ -70,7 +70,7 @@ namespace GoodsLogistics.BLL.Services
         {
             var isUserCompanyExist = _unitOfWork.GetRepository<UserCompanyModel>().IsExist(
                 userCompanyModel => userCompanyModel.Email == userCompany.Email);
-            if (!isUserCompanyExist)
+            if (isUserCompanyExist)
             {
                 var badResult = BadRequestObjectResultFactory.Create(
                     nameof(userCompany.Email),
@@ -78,6 +78,7 @@ namespace GoodsLogistics.BLL.Services
                 return badResult;
             }
 
+            var r = _unitOfWork.GetRepository<UserCompanyModel>();
             userCompany = _unitOfWork.GetRepository<UserCompanyModel>().Create(userCompany);
             _unitOfWork.Save();
             var userCompanyViewModel = _mapper.Map<UserCompanyViewModel>(userCompany);
@@ -137,7 +138,12 @@ namespace GoodsLogistics.BLL.Services
             UserCompanyModel userCompany,
             CancellationToken cancellationToken = default)
         {
-            CreateUser(userCompany, cancellationToken);
+            var creationObjectResult = CreateUser(userCompany, cancellationToken);
+            if (creationObjectResult.StatusCode != 200)
+            {
+                return creationObjectResult;
+            }
+
             var token = _tokenProvider.GenerateTokenForUser(userCompany);
 
             var result = new OkObjectResult(token);

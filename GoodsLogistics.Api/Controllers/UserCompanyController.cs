@@ -35,7 +35,7 @@ namespace GoodsLogistics.Api.Controllers
 
         [HttpPost("login")]
         public IActionResult LoginUserCompany(
-            [FromBody] UserCompanyViewModel loginRequestViewModel,
+            [FromBody] UserCompanyLoginRequestViewModel loginRequestViewModel,
             CancellationToken cancellationToken = default)
         {
             var loginRequestModel = _mapper.Map<UserCompanyLoginRequestModel>(loginRequestViewModel);
@@ -45,7 +45,7 @@ namespace GoodsLogistics.Api.Controllers
 
         [HttpPatch("users/{email}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public IActionResult UpdateOffice(
+        public IActionResult UpdateUserCompany(
             [FromRoute] string email,
             [FromBody] UserCompanyUpdateRequestViewModel updateRequestViewModel,
             CancellationToken cancellationToken = default)
@@ -60,7 +60,7 @@ namespace GoodsLogistics.Api.Controllers
 
         [HttpDelete("users/{email}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public IActionResult DeleteOffice(
+        public IActionResult DeleteUserCompany(
             [FromRoute] string email,
             CancellationToken cancellationToken = default)
         {

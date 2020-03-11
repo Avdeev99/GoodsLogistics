@@ -29,6 +29,26 @@ namespace GoodsLogistics.DAL.EF
             modelBuilder.Entity<OfficeModel>()
                 .HasIndex(officeModel => officeModel.Key)
                 .IsUnique();
+
+            modelBuilder.Entity<CountryModel>()
+                .Property(countryModel => countryModel.CountryId)
+                .ValueGeneratedOnAdd();
+
+            modelBuilder.Entity<CityModel>()
+                .Property(cityModel => cityModel.CityId)
+                .ValueGeneratedOnAdd();
+
+            modelBuilder.Entity<OfficeModel>()
+                .Property(officeModel => officeModel.OfficeId)
+                .ValueGeneratedOnAdd();
+
+            modelBuilder.Entity<ObjectiveModel>()
+                .Property(objectiveModel => objectiveModel.ObjectiveId)
+                .ValueGeneratedOnAdd();
+
+            modelBuilder.Entity<UserCompanyModel>()
+                .Property(userCompanyModel => userCompanyModel.CompanyId)
+                .ValueGeneratedOnAdd();
         }
     }
 }

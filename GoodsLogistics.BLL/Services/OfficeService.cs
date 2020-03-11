@@ -62,7 +62,7 @@ namespace GoodsLogistics.BLL.Services
         {
             var isOfficeExist = _unitOfWork.GetRepository<OfficeModel>().IsExist(
                 officeModel => officeModel.Key == office.Key);
-            if (!isOfficeExist)
+            if (isOfficeExist)
             {
                 var badResult = BadRequestObjectResultFactory.Create(
                     nameof(office.Key),

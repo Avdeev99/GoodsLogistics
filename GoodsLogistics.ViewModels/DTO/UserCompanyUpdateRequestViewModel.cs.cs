@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using GoodsLogistics.Models.DTO;
 using GoodsLogistics.Models.DTO.Office;
 
 namespace GoodsLogistics.ViewModels.DTO
