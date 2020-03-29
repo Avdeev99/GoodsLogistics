@@ -1,10 +1,10 @@
-﻿using System.Text;
-using GoodsLogistics.Infrastructure.Options;
+﻿using GoodsLogistics.Infrastructure.Options;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace GoodsLogistics.Api.AppStart
 {

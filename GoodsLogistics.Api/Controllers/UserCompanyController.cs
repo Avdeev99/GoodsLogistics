@@ -1,11 +1,11 @@
-﻿using System.Threading;
-using AutoMapper;
+﻿using AutoMapper;
 using GoodsLogistics.BLL.Services.Interfaces;
 using GoodsLogistics.Models.DTO.UserCompany;
 using GoodsLogistics.ViewModels.DTO;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading;
 
 namespace GoodsLogistics.Api.Controllers
 {
@@ -16,7 +16,7 @@ namespace GoodsLogistics.Api.Controllers
         private readonly IMapper _mapper;
 
         public UserCompanyController(
-            IUserCompanyService userCompanyService, 
+            IUserCompanyService userCompanyService,
             IMapper mapper)
         {
             _userCompanyService = userCompanyService;
@@ -43,6 +43,19 @@ namespace GoodsLogistics.Api.Controllers
             return result;
         }
 
+
+        [HttpGet("users/{email}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public IActionResult GetUserCompany(
+            [FromRoute] string email,
+            CancellationToken cancellationToken = default)
+        {
+            var result = _userCompanyService.GetUserCompanyByEmail(
+                email,
+                cancellationToken);
+            return result;
+        }
+
         [HttpPatch("users/{email}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public IActionResult UpdateUserCompany(
@@ -66,6 +79,12 @@ namespace GoodsLogistics.Api.Controllers
         {
             var result = _userCompanyService.DeleteUserCompany(email, cancellationToken);
             return result;
+        }
+
+        [HttpGet("/home")]
+        public IActionResult Home()
+        {
+            return Ok("Hello");
         }
     }
 }

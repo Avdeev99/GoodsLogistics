@@ -28,7 +28,7 @@ namespace GoodsLogistics.BLL.Services
             var offices = _unitOfWork.GetRepository<OfficeModel>()
                 .GetAll(
                     TrackingState.Disabled,
-                    "City.Country")
+                    "City.Region")
                 .ToList();
             var officeViewModels = _mapper.Map<List<OfficeViewModel>>(offices);
 
@@ -43,7 +43,7 @@ namespace GoodsLogistics.BLL.Services
             var office = _unitOfWork.GetRepository<OfficeModel>().Get(
                 officeModel => officeModel.Key == key,
                 TrackingState.Disabled,
-                "City.Country");
+                "City.Region");
             if (office == null)
             {
                 var notFoundResult = new NotFoundObjectResult("Office by provided key not found");
@@ -86,7 +86,7 @@ namespace GoodsLogistics.BLL.Services
             var office = _unitOfWork.GetRepository<OfficeModel>().Get(
                 officeModel => officeModel.Key == key,
                 TrackingState.Enabled,
-                "City.Country");
+                "City.Region");
             if (office == null)
             {
                 var notFoundResult = new NotFoundObjectResult("Office by provided key not found");
@@ -109,7 +109,7 @@ namespace GoodsLogistics.BLL.Services
             var office = _unitOfWork.GetRepository<OfficeModel>().Get(
                 officeModel => officeModel.Key == key,
                 TrackingState.Enabled,
-                "City.Country");
+                "City.Region");
             if (office == null)
             {
                 var notFoundResult = new NotFoundObjectResult("Office by provided key not found");

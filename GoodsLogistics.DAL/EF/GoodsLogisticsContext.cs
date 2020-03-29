@@ -1,7 +1,11 @@
-﻿using GoodsLogistics.Models.DTO;
+﻿using System.IO;
+using System.Linq;
+using GoodsLogistics.Models.DTO;
+using GoodsLogistics.Models.DTO.Location;
 using GoodsLogistics.Models.DTO.Office;
 using GoodsLogistics.Models.DTO.UserCompany;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace GoodsLogistics.DAL.EF
 {
@@ -10,9 +14,11 @@ namespace GoodsLogistics.DAL.EF
         public GoodsLogisticsContext(DbContextOptions options) : base(options)
         {
             Database.EnsureCreated();
+            SeedData();
         }
 
         public DbSet<CountryModel> Countries { get; set; }
+        public DbSet<RegionModel> Regions { get; set; }
         public DbSet<CityModel> Cities { get; set; }
         public DbSet<UserCompanyModel> Companies { get; set; }
         public DbSet<OfficeModel> Offices { get; set; }
@@ -20,8 +26,9 @@ namespace GoodsLogistics.DAL.EF
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<CountryModel>().HasKey(countryModel => countryModel.CountryId);
-            modelBuilder.Entity<CityModel>().HasKey(cityModel => cityModel.CityId);
+            modelBuilder.Entity<CountryModel>().HasKey(countryModel => countryModel.Id);
+            modelBuilder.Entity<RegionModel>().HasKey(regionModel => regionModel.Id);
+            modelBuilder.Entity<CityModel>().HasKey(cityModel => cityModel.Id);
             modelBuilder.Entity<OfficeModel>().HasKey(officeModel => officeModel.OfficeId);
             modelBuilder.Entity<ObjectiveModel>().HasKey(objectiveModel => objectiveModel.ObjectiveId);
             modelBuilder.Entity<UserCompanyModel>().HasKey(userCompanyModel => userCompanyModel.CompanyId);
@@ -31,11 +38,15 @@ namespace GoodsLogistics.DAL.EF
                 .IsUnique();
 
             modelBuilder.Entity<CountryModel>()
-                .Property(countryModel => countryModel.CountryId)
+                .Property(countryModel => countryModel.Id)
+                .ValueGeneratedOnAdd();
+
+            modelBuilder.Entity<RegionModel>()
+                .Property(regionModel => regionModel.Id)
                 .ValueGeneratedOnAdd();
 
             modelBuilder.Entity<CityModel>()
-                .Property(cityModel => cityModel.CityId)
+                .Property(cityModel => cityModel.Id)
                 .ValueGeneratedOnAdd();
 
             modelBuilder.Entity<OfficeModel>()
@@ -49,6 +60,96 @@ namespace GoodsLogistics.DAL.EF
             modelBuilder.Entity<UserCompanyModel>()
                 .Property(userCompanyModel => userCompanyModel.CompanyId)
                 .ValueGeneratedOnAdd();
+        }
+
+        private void SeedData()
+        {
+            if (!Countries.Any())
+            {
+                var query = "InsertAllCountries";
+                Database.ExecuteSqlRaw(query);
+            }
+
+            if (!Regions.Any())
+            {
+                var query = "InsertAllRegions";
+                Database.ExecuteSqlRaw(query);
+            }
+
+            if (!Cities.Any())
+            {
+                //var filePath1 = Path.Combine(Directory.GetParent(
+                //    Directory.GetCurrentDirectory()).FullName,
+                //    @"GoodsLogistics.Api\wwwroot\sql-scripts\04 - Insert Cities 01.sql");
+                //var sql1 = File.ReadAllText(filePath1);
+                //Database.ExecuteSqlRaw(sql1);
+
+                //var filePath2 = Path.Combine(Directory.GetParent(
+                //        Directory.GetCurrentDirectory()).FullName,
+                //    @"GoodsLogistics.Api\wwwroot\sql-scripts\04 - Insert Cities 02.sql");
+                //var sql2 = File.ReadAllText(filePath2);
+                //Database.ExecuteSqlRaw(sql2);
+
+                //var filePath3 = Path.Combine(Directory.GetParent(
+                //        Directory.GetCurrentDirectory()).FullName,
+                //    @"GoodsLogistics.Api\wwwroot\sql-scripts\04 - Insert Cities 03.sql");
+                //var sql3 = File.ReadAllText(filePath3);
+                //Database.ExecuteSqlRaw(sql3);
+
+                //var filePath4 = Path.Combine(Directory.GetParent(
+                //        Directory.GetCurrentDirectory()).FullName,
+                //    @"GoodsLogistics.Api\wwwroot\sql-scripts\04 - Insert Cities 04.sql");
+                //var sql4 = File.ReadAllText(filePath4);
+                //Database.ExecuteSqlRaw(sql4);
+
+                //var filePath5 = Path.Combine(Directory.GetParent(
+                //        Directory.GetCurrentDirectory()).FullName,
+                //    @"GoodsLogistics.Api\wwwroot\sql-scripts\04 - Insert Cities 05.sql");
+                //var sql5 = File.ReadAllText(filePath5);
+                //Database.ExecuteSqlRaw(sql5);
+
+                //var filePath6 = Path.Combine(Directory.GetParent(
+                //        Directory.GetCurrentDirectory()).FullName,
+                //    @"GoodsLogistics.Api\wwwroot\sql-scripts\04 - Insert Cities 06.sql");
+                //var sql6 = File.ReadAllText(filePath6);
+                //Database.ExecuteSqlRaw(sql6);
+
+                //var filePath7 = Path.Combine(Directory.GetParent(
+                //        Directory.GetCurrentDirectory()).FullName,
+                //    @"GoodsLogistics.Api\wwwroot\sql-scripts\04 - Insert Cities 07.sql");
+                //var sql7 = File.ReadAllText(filePath7);
+                //Database.ExecuteSqlRaw(sql7);
+
+                //var filePath8 = Path.Combine(Directory.GetParent(
+                //        Directory.GetCurrentDirectory()).FullName,
+                //    @"GoodsLogistics.Api\wwwroot\sql-scripts\04 - Insert Cities 08.sql");
+                //var sql8 = File.ReadAllText(filePath8);
+                //Database.ExecuteSqlRaw(sql8);
+
+                //var filePath9 = Path.Combine(Directory.GetParent(
+                //        Directory.GetCurrentDirectory()).FullName,
+                //    @"GoodsLogistics.Api\wwwroot\sql-scripts\04 - Insert Cities 09.sql");
+                //var sql9 = File.ReadAllText(filePath9);
+                //Database.ExecuteSqlRaw(sql9);
+
+                //var filePath10 = Path.Combine(Directory.GetParent(
+                //        Directory.GetCurrentDirectory()).FullName,
+                //    @"GoodsLogistics.Api\wwwroot\sql-scripts\04 - Insert Cities 10.sql");
+                //var sql10 = File.ReadAllText(filePath10);
+                //Database.ExecuteSqlRaw(sql10);
+
+                //var filePath11 = Path.Combine(Directory.GetParent(
+                //        Directory.GetCurrentDirectory()).FullName,
+                //    @"GoodsLogistics.Api\wwwroot\sql-scripts\04 - Insert Cities 11.sql");
+                //var sql11 = File.ReadAllText(filePath11);
+                //Database.ExecuteSqlRaw(sql11);
+
+                //var filePath12 = Path.Combine(Directory.GetParent(
+                //        Directory.GetCurrentDirectory()).FullName,
+                //    @"GoodsLogistics.Api\wwwroot\sql-scripts\04 - Insert Cities 12.sql");
+                //var sql12 = File.ReadAllText(filePath12);
+                //Database.ExecuteSqlRaw(sql12);
+            }
         }
     }
 }

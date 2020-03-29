@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading;
 using AutoMapper;
+using CryptoHelper;
 using GoodsLogistics.Auth.Tokens.Interfaces;
 using GoodsLogistics.BLL.Helpers;
 using GoodsLogistics.BLL.Services.Interfaces;
@@ -10,6 +11,7 @@ using GoodsLogistics.Models.DTO.UserCompany;
 using GoodsLogistics.Models.Enums;
 using GoodsLogistics.ViewModels.DTO;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace GoodsLogistics.BLL.Services
 {
@@ -102,6 +104,20 @@ namespace GoodsLogistics.BLL.Services
                 return notFoundResult;
             }
 
+            if (!string.IsNullOrEmpty(updateRequestModel.NewPassword))
+            {
+                if (!Crypto.VerifyHashedPassword(userCompany.PasswordHash, updateRequestModel.OldPassword))
+                {
+                    var badRequestResult = BadRequestObjectResultFactory.Create(
+                        nameof(updateRequestModel.OldPassword), 
+                        "Wrong old password");
+                    return badRequestResult;
+                }
+
+                var passwordHash = Crypto.HashPassword(updateRequestModel.NewPassword);
+                userCompany.PasswordHash = passwordHash;
+            }
+
             userCompany.Offices.Clear();
             userCompany.Offices = updateRequestModel.Offices;
             userCompany.Name = updateRequestModel.Name ?? userCompany.Name;
@@ -146,7 +162,11 @@ namespace GoodsLogistics.BLL.Services
 
             var token = _tokenProvider.GenerateTokenForUser(userCompany);
 
-            var result = new OkObjectResult(token);
+            var authResult = new AuthResultViewModel(
+                token, 
+                (UserCompanyViewModel)creationObjectResult.Value);
+
+            var result = new OkObjectResult(authResult);
             return result;
         }
 
@@ -158,16 +178,24 @@ namespace GoodsLogistics.BLL.Services
                 userCompanyModel => userCompanyModel.Email == loginRequestModel.Email,
                 TrackingState.Enabled,
                 "Offices.City.Country");
-            if (userCompany != null && userCompany.PasswordHash == loginRequestModel.PasswordHash)
+            if (userCompany != null
+                && Crypto.VerifyHashedPassword(userCompany.PasswordHash, loginRequestModel.Password))
             {
                 var token = _tokenProvider.GenerateTokenForUser(userCompany);
-                var result = new OkObjectResult(token);
+                var userCompanyViewModel = _mapper.Map<UserCompanyViewModel>(userCompany);
+                var authResult = new AuthResultViewModel(token, userCompanyViewModel);
+
+                var result = new OkObjectResult(authResult);
                 return result;
             }
 
-            var badResult = BadRequestObjectResultFactory.Create(
-                nameof(userCompany.Email),
-                "Invalid credentials");
+            var errors = new Dictionary<string, string>
+            {
+                {nameof(userCompany.Email), "Invalid credentials"}
+            };
+
+            var badAuthResult = new AuthResultViewModel(errors);
+            var badResult = new ObjectResult(badAuthResult);
             return badResult;
         }
     }

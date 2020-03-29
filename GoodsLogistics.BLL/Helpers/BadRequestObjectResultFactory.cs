@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace GoodsLogistics.BLL.Helpers
@@ -7,10 +8,12 @@ namespace GoodsLogistics.BLL.Helpers
     {
         public static BadRequestObjectResult Create(string key, string errorMessage)
         {
-            var modelStateDictionary = new ModelStateDictionary();
-            modelStateDictionary.AddModelError(key, errorMessage);
+            var errors = new Dictionary<string, string>()
+            {
+                { key, errorMessage}
+            };
 
-            var badResult = new BadRequestObjectResult(modelStateDictionary);
+            var badResult = new BadRequestObjectResult(errors);
             return badResult;
         }
     }

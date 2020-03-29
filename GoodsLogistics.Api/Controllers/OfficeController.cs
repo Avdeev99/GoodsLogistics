@@ -1,11 +1,11 @@
-﻿using System.Threading;
-using AutoMapper;
+﻿using AutoMapper;
 using GoodsLogistics.BLL.Services.Interfaces;
 using GoodsLogistics.Models.DTO.Office;
 using GoodsLogistics.ViewModels.DTO;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 
 namespace GoodsLogistics.Api.Controllers
 {
@@ -31,7 +31,7 @@ namespace GoodsLogistics.Api.Controllers
 
         [HttpGet("offices/{key}")]
         public IActionResult GetOfficeByKey(
-            [FromRoute] string key, 
+            [FromRoute] string key,
             CancellationToken cancellationToken = default)
         {
             var result = _officeService.GetOfficeByKey(key, cancellationToken);
@@ -56,8 +56,8 @@ namespace GoodsLogistics.Api.Controllers
         {
             var updateRequestModel = _mapper.Map<OfficeUpdateRequestModel>(updateRequestViewModel);
             var result = _officeService.UpdateOffice(
-                key, 
-                updateRequestModel, 
+                key,
+                updateRequestModel,
                 cancellationToken);
             return result;
         }

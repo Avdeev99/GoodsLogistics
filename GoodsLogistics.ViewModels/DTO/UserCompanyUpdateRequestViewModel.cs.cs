@@ -7,6 +7,10 @@ namespace GoodsLogistics.ViewModels.DTO
     {
         public string Name { get; set; }
 
+        public string OldPassword { get; set; }
+
+        public string NewPassword { get; set; }
+
         public List<OfficeModel> Offices { get; set; }
     }
 }

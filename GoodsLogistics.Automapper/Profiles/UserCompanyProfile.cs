@@ -20,10 +20,7 @@ namespace GoodsLogistics.Automapper.Profiles
 
             CreateMap<UserCompanyLoginRequestModel, UserCompanyLoginRequestViewModel>();
 
-            CreateMap<UserCompanyLoginRequestViewModel, UserCompanyLoginRequestModel>()
-                .ForMember(
-                    dest => dest.PasswordHash,
-                    m => m.MapFrom(s => GetPasswordHash(s.Password)));
+            CreateMap<UserCompanyLoginRequestViewModel, UserCompanyLoginRequestModel>();
         }
 
         private string GetPasswordHash(string password)

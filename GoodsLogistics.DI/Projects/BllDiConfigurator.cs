@@ -9,8 +9,12 @@ namespace GoodsLogistics.DI.Projects
         public static void Configure(IServiceCollection services)
         {
             services.AddScoped<IUserCompanyService, UserCompanyService>();
+
             services.AddScoped<IOfficeService, OfficeService>();
+
             services.AddScoped<IObjectiveService, ObjectiveService>();
+
+            services.AddScoped<ILocationService, LocationService>();
         }
     }
 }

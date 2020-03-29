@@ -1,4 +1,5 @@
-﻿using GoodsLogistics.Models.DTO.UserCompany;
+﻿using GoodsLogistics.Models.DTO.Location;
+using GoodsLogistics.Models.DTO.UserCompany;
 
 namespace GoodsLogistics.Models.DTO.Office
 {
@@ -10,7 +11,7 @@ namespace GoodsLogistics.Models.DTO.Office
 
         public string Address { get; set; }
 
-        public string CityId { get; set; }
+        public int CityId { get; set; }
 
         public CityModel City { get; set; }
 

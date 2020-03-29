@@ -1,4 +1,5 @@
 ﻿using GoodsLogistics.Models.DTO;
+using GoodsLogistics.Models.DTO.Location;
 using GoodsLogistics.Models.DTO.UserCompany;
 
 namespace GoodsLogistics.ViewModels.DTO

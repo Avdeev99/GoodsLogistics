@@ -1,12 +1,12 @@
-﻿using System.Threading;
-using AutoMapper;
+﻿using AutoMapper;
 using GoodsLogistics.BLL.Services.Interfaces;
 using GoodsLogistics.Models.DTO;
 using GoodsLogistics.Models.DTO.Objective;
 using GoodsLogistics.ViewModels.DTO;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 
 namespace GoodsLogistics.Api.Controllers
 {
