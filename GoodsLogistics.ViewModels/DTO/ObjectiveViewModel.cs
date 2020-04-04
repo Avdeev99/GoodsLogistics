@@ -1,5 +1,8 @@
 ﻿using System;
+using GoodsLogistics.Models.DTO;
+using GoodsLogistics.Models.DTO.Location;
 using GoodsLogistics.Models.DTO.UserCompany;
+using GoodsLogistics.Models.Enums;
 
 namespace GoodsLogistics.ViewModels.DTO
 {
@@ -15,8 +18,18 @@ namespace GoodsLogistics.ViewModels.DTO
 
         public UserCompanyModel ReceiverCompany { get; set; }
 
-        public DateTime StartTime { get; set; }
+        public DateTime OrderDate { get; set; }
 
-        public DateTime EndTime { get; set; }
+        public DateTime EndDate { get; set; }
+
+        public DateTime CreationDate { get; set; }
+
+        public OrderFrequency Frequency { get; set; }
+
+        public GoodModel Good { get; set; }
+
+        public LocationModel Location { get; set; }
+
+        public decimal Price { get; set; }
     }
 }

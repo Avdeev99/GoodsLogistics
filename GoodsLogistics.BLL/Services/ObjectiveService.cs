@@ -31,8 +31,8 @@ namespace GoodsLogistics.BLL.Services
                     objectiveModel => !objectiveModel.IsRemoved,
                     null,
                     TrackingState.Disabled,
-                    "SenderCompany.Offices.City.Country",
-                    "ReceiverCompany.Offices.City.Country")
+                    "SenderCompany.Offices.City.Region.Country",
+                    "ReceiverCompany.Offices.City.Region.Country")
                 .ToList();
             var objectiveViewModels = _mapper.Map<List<ObjectiveViewModel>>(objectives);
 
@@ -47,8 +47,10 @@ namespace GoodsLogistics.BLL.Services
             var objective = _unitOfWork.GetRepository<ObjectiveModel>().Get(
                 objectiveModel => objectiveModel.ObjectiveId == id,
                 TrackingState.Disabled,
-                "SenderCompany.Offices.City.Country",
-                "ReceiverCompany.Offices.City.Country");
+                "SenderCompany.Offices.City.Region.Country",
+                "ReceiverCompany.Offices.City.Region.Country",
+                "Location.City.Region.Country",
+                "Good");
             if (objective == null)
             {
                 var notFoundResult = new NotFoundObjectResult("Objective by provided id not found");
@@ -65,9 +67,10 @@ namespace GoodsLogistics.BLL.Services
             ObjectiveModel objective, 
             CancellationToken cancellationToken = default)
         {
+            objective.CreationDate = DateTime.UtcNow;
             objective = _unitOfWork.GetRepository<ObjectiveModel>().Create(objective);
             _unitOfWork.Save();
-            var objectiveViewModel = _mapper.Map<UserCompanyViewModel>(objective);
+            var objectiveViewModel = _mapper.Map<ObjectiveViewModel>(objective);
 
             var result = new OkObjectResult(objectiveViewModel);
             return result;
@@ -81,8 +84,8 @@ namespace GoodsLogistics.BLL.Services
             var objective = _unitOfWork.GetRepository<ObjectiveModel>().Get(
                 objectiveModel => objectiveModel.ObjectiveId == id,
                 TrackingState.Enabled,
-                "SenderCompany.Offices.City.Country",
-                "ReceiverCompany.Offices.City.Country");
+                "SenderCompany.Offices.City.Region.Country",
+                "ReceiverCompany.Offices.City.Region.Country");
             if (objective == null)
             {
                 var notFoundResult = new NotFoundObjectResult("Objective by provided id not found");
@@ -90,15 +93,12 @@ namespace GoodsLogistics.BLL.Services
             }
 
             objective.ReceiverCompanyId = updateRequestModel.ReceiverCompanyId;
-            objective.StartTime = updateRequestModel.StartTime == default(DateTime)
-                ? objective.StartTime
-                : updateRequestModel.StartTime;
-            objective.EndTime = updateRequestModel.EndTime == default(DateTime)
-                ? objective.EndTime
-                : updateRequestModel.EndTime;
+            objective.EndDate = updateRequestModel.EndDate == default(DateTime)
+                ? objective.EndDate
+                : updateRequestModel.EndDate;
             _unitOfWork.Save();
 
-            var objectiveViewModel = _mapper.Map<UserCompanyViewModel>(objective);
+            var objectiveViewModel = _mapper.Map<ObjectiveViewModel>(objective);
 
             var result = new OkObjectResult(objectiveViewModel);
             return result;
@@ -111,8 +111,8 @@ namespace GoodsLogistics.BLL.Services
             var objective = _unitOfWork.GetRepository<ObjectiveModel>().Get(
                 objectiveModel => objectiveModel.ObjectiveId == id,
                 TrackingState.Enabled,
-                "SenderCompany.Offices.City.Country",
-                "ReceiverCompany.Offices.City.Country");
+                "SenderCompany.Offices.City.Region.Country",
+                "ReceiverCompany.Offices.City.Region.Country");
             if (objective == null)
             {
                 var notFoundResult = new NotFoundObjectResult("Objective by provided id not found");

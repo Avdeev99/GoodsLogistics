@@ -43,7 +43,7 @@ namespace GoodsLogistics.BLL.Services
             var office = _unitOfWork.GetRepository<OfficeModel>().Get(
                 officeModel => officeModel.Key == key,
                 TrackingState.Disabled,
-                "City.Region");
+                "City.Region.Country");
             if (office == null)
             {
                 var notFoundResult = new NotFoundObjectResult("Office by provided key not found");
@@ -86,7 +86,7 @@ namespace GoodsLogistics.BLL.Services
             var office = _unitOfWork.GetRepository<OfficeModel>().Get(
                 officeModel => officeModel.Key == key,
                 TrackingState.Enabled,
-                "City.Region");
+                "City.Region.Country");
             if (office == null)
             {
                 var notFoundResult = new NotFoundObjectResult("Office by provided key not found");
@@ -94,6 +94,7 @@ namespace GoodsLogistics.BLL.Services
             }
 
             office.Address = updateRequestModel.Address ?? office.Address;
+            office.CityId = updateRequestModel.CityId;
             _unitOfWork.Save();
 
             var officeViewModel = _mapper.Map<OfficeViewModel>(office);

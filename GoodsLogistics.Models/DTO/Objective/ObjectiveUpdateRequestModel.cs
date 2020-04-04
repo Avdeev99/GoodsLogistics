@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using GoodsLogistics.Models.Enums;
 
 namespace GoodsLogistics.Models.DTO.Objective
 {
@@ -8,8 +7,8 @@ namespace GoodsLogistics.Models.DTO.Objective
     {
         public string ReceiverCompanyId { get; set; }
 
-        public DateTime StartTime { get; set; }
+        public DateTime EndDate { get; set; }
 
-        public DateTime EndTime { get; set; }
+        public OrderFrequency Frequency { get; set; }
     }
 }

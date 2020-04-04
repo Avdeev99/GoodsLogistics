@@ -50,7 +50,7 @@ namespace GoodsLogistics.BLL.Services
 
             var regions = _regionRepository.GetMany(
                 regionModel => regionModel.CountryId.Equals(countryId), 
-                null,
+                regionModel => regionModel.Name,
                 TrackingState.Disabled);
             var regionViewModels = _mapper.Map<List<RegionViewModel>>(regions);
 
@@ -71,7 +71,7 @@ namespace GoodsLogistics.BLL.Services
 
             var cities = _cityRepository.GetMany(
                 regionModel => regionModel.RegionId.Equals(regionId),
-                null,
+                regionModel => regionModel.Name,
                 TrackingState.Disabled);
             var cityViewModels = _mapper.Map<List<CityViewModel>>(cities);
 

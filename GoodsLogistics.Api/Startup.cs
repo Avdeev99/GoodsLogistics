@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json;
 
 namespace GoodsLogistics.Api
 {
@@ -27,6 +28,13 @@ namespace GoodsLogistics.Api
             services
                 .AddControllers()
                 .SetCompatibilityVersion(CompatibilityVersion.Latest);
+
+            services
+                .AddControllers()
+                .AddNewtonsoftJson(x =>
+                {
+                    x.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

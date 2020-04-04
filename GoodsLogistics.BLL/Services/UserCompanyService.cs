@@ -38,7 +38,7 @@ namespace GoodsLogistics.BLL.Services
                     userCompanyModel => !userCompanyModel.IsRemoved, 
                 null, 
                 TrackingState.Disabled,
-                "Offices.City.Country")
+                "Offices.City.Region.Country")
                 .ToList();
             var userCompaniesViewModels = _mapper.Map<List<UserCompanyViewModel>>(userCompanies);
 
@@ -53,7 +53,7 @@ namespace GoodsLogistics.BLL.Services
             var userCompany = _unitOfWork.GetRepository<UserCompanyModel>().Get(
                 userCompanyModel => userCompanyModel.Email == email, 
                 TrackingState.Disabled,
-                "Offices.City.Country");
+                "Offices.City.Region.Country");
             if (userCompany == null)
             {
                 var notFoundResult = new NotFoundObjectResult("Company by provided email not found");
@@ -97,7 +97,7 @@ namespace GoodsLogistics.BLL.Services
             var userCompany = _unitOfWork.GetRepository<UserCompanyModel>().Get(
                 userCompanyModel => userCompanyModel.Email == email,
                 TrackingState.Enabled,
-                "Offices.City.Country");
+                "Offices.City.Region.Country");
             if (userCompany == null)
             {
                 var notFoundResult = new NotFoundObjectResult("Company by provided email not found");
@@ -136,7 +136,7 @@ namespace GoodsLogistics.BLL.Services
             var userCompany = _unitOfWork.GetRepository<UserCompanyModel>().Get(
                 userCompanyModel => userCompanyModel.Email == email,
                 TrackingState.Enabled,
-                "Offices.City.Country");
+                "Offices.City.Region.Country");
             if (userCompany == null)
             {
                 var notFoundResult = new NotFoundObjectResult("Company by provided email not found");
@@ -154,6 +154,18 @@ namespace GoodsLogistics.BLL.Services
             UserCompanyModel userCompany,
             CancellationToken cancellationToken = default)
         {
+            var company = _unitOfWork
+                .GetRepository<UserCompanyModel>()
+                .Get(userCompanyModel => userCompanyModel.Email.Equals(userCompany.Email), 
+                    TrackingState.Disabled);
+            if (company != null)
+            {
+                var badResult = BadRequestObjectResultFactory.Create(
+                    nameof(userCompany.Email),
+                    "User with provided email already exists");
+                return badResult;
+            }
+
             var creationObjectResult = CreateUser(userCompany, cancellationToken);
             if (creationObjectResult.StatusCode != 200)
             {
@@ -177,7 +189,7 @@ namespace GoodsLogistics.BLL.Services
             var userCompany = _unitOfWork.GetRepository<UserCompanyModel>().Get(
                 userCompanyModel => userCompanyModel.Email == loginRequestModel.Email,
                 TrackingState.Enabled,
-                "Offices.City.Country");
+                "Offices.City.Region.Country");
             if (userCompany != null
                 && Crypto.VerifyHashedPassword(userCompany.PasswordHash, loginRequestModel.Password))
             {
