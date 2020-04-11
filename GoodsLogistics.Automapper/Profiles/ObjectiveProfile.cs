@@ -10,7 +10,10 @@ namespace GoodsLogistics.Automapper.Profiles
         public ObjectiveProfile()
         {
             CreateMap<ObjectiveModel, ObjectiveViewModel>().ReverseMap();
+
             CreateMap<ObjectiveUpdateRequestModel, ObjectiveUpdateRequestViewModel>().ReverseMap();
+
+            CreateMap<ObjectiveFilteringModel, ObjectiveFilteringViewModel>().ReverseMap();
         }
     }
 }

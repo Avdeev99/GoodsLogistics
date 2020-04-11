@@ -70,5 +70,16 @@ namespace GoodsLogistics.Api.Controllers
             var result = _officeService.DeleteOffice(key, cancellationToken);
             return result;
         }
+
+        [HttpGet("company/{id}/offices")]
+        public IActionResult GetOfficesByCompanyEmail(
+            string id, 
+            CancellationToken cancellationToken = default)
+        {
+            var result = _officeService.GetOfficesByCompanyId(
+                id, 
+                cancellationToken);
+            return result;
+        }
     }
 }

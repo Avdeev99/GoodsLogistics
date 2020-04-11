@@ -24,5 +24,9 @@ namespace GoodsLogistics.BLL.Services.Interfaces
         ObjectResult DeleteOffice(
             string key,
             CancellationToken cancellationToken = default);
+
+        ObjectResult GetOfficesByCompanyId(
+            string id,
+            CancellationToken cancellationToken = default);
     }
 }

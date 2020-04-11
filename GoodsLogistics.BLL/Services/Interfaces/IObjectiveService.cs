@@ -9,6 +9,10 @@ namespace GoodsLogistics.BLL.Services.Interfaces
     {
         ObjectResult GetObjectives(CancellationToken cancellationToken = default);
 
+        ObjectResult GetObjectivesByFilter(
+            ObjectiveFilteringModel filteringModel,
+            CancellationToken cancellationToken = default);
+
         ObjectResult GetObjectiveById(
             string id,
             CancellationToken cancellationToken = default);
@@ -25,5 +29,9 @@ namespace GoodsLogistics.BLL.Services.Interfaces
         ObjectResult DeleteObjective(
             string id,
             CancellationToken cancellationToken = default);
+
+        ObjectResult GetObjectivesMinPrice(CancellationToken cancellationToken = default);
+
+        ObjectResult GetObjectivesMaxPrice(CancellationToken cancellationToken = default);
     }
 }

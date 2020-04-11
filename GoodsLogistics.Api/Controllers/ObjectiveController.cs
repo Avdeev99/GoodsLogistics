@@ -71,5 +71,31 @@ namespace GoodsLogistics.Api.Controllers
             var result = _objectiveService.DeleteObjective(id, cancellationToken);
             return result;
         }
+
+        [HttpPost("objectives/filtered")]
+        public IActionResult GetObjectivesByFilter(
+            ObjectiveFilteringViewModel filteringViewModel, 
+            CancellationToken cancellationToken = default)
+        {
+            var filter = _mapper.Map<ObjectiveFilteringModel>(filteringViewModel);
+            var result = _objectiveService.GetObjectivesByFilter(
+                filter, 
+                cancellationToken);
+            return result;
+        }
+
+        [HttpGet("objectives/price/min")]
+        public IActionResult GetObjectivesMinPrice(CancellationToken cancellationToken = default)
+        {
+            var result = _objectiveService.GetObjectivesMinPrice(cancellationToken);
+            return result;
+        }
+
+        [HttpGet("objectives/price/max")]
+        public IActionResult GetObjectivesMaxPrice(CancellationToken cancellationToken = default)
+        {
+            var result = _objectiveService.GetObjectivesMaxPrice(cancellationToken);
+            return result;
+        }
     }
 }

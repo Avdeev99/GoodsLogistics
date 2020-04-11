@@ -123,5 +123,19 @@ namespace GoodsLogistics.BLL.Services
             var result = new OkObjectResult(null);
             return result;
         }
+
+        public ObjectResult GetOfficesByCompanyId(string id, CancellationToken cancellationToken = default)
+        {
+            var offices = _unitOfWork.GetRepository<OfficeModel>()
+                .GetMany(officeModel => officeModel.CompanyId.Equals(id),
+                    null,
+                    TrackingState.Disabled,
+                    "City.Region")
+                .ToList();
+            var officeViewModels = _mapper.Map<List<OfficeViewModel>>(offices);
+
+            var result = new OkObjectResult(officeViewModels);
+            return result;
+        }
     }
 }
