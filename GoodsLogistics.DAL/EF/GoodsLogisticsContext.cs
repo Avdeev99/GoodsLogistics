@@ -1,11 +1,12 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
+using CryptoHelper;
 using GoodsLogistics.Models.DTO;
 using GoodsLogistics.Models.DTO.Location;
 using GoodsLogistics.Models.DTO.Office;
 using GoodsLogistics.Models.DTO.UserCompany;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace GoodsLogistics.DAL.EF
 {
@@ -25,6 +26,9 @@ namespace GoodsLogistics.DAL.EF
         public DbSet<ObjectiveModel> Objectives { get; set; }
         public DbSet<GoodModel> Goods { get; set; }
         public DbSet<LocationModel> Locations { get; set; }
+        public DbSet<RoleModel> Roles { get; set; }
+        public DbSet<RuleModel> Rules { get; set; }
+        public DbSet<RequestModel> Requests { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -36,6 +40,9 @@ namespace GoodsLogistics.DAL.EF
             modelBuilder.Entity<UserCompanyModel>().HasKey(userCompanyModel => userCompanyModel.CompanyId);
             modelBuilder.Entity<GoodModel>().HasKey(goodModel => goodModel.Id);
             modelBuilder.Entity<LocationModel>().HasKey(locationModel => locationModel.Id);
+            modelBuilder.Entity<RoleModel>().HasKey(roleModel => roleModel.RoleId);
+            modelBuilder.Entity<RuleModel>().HasKey(ruleModel => ruleModel.RuleId);
+            modelBuilder.Entity<RequestModel>().HasKey(requestModel => requestModel.RequestId);
 
             modelBuilder.Entity<OfficeModel>()
                 .HasIndex(officeModel => officeModel.Key)
@@ -72,6 +79,49 @@ namespace GoodsLogistics.DAL.EF
             modelBuilder.Entity<GoodModel>()
                 .Property(goodModel => goodModel.Id)
                 .ValueGeneratedOnAdd();
+
+            modelBuilder.Entity<RoleModel>()
+                .Property(roleModel => roleModel.RoleId)
+                .ValueGeneratedOnAdd();
+
+            modelBuilder.Entity<RuleModel>()
+                .Property(ruleModel => ruleModel.RuleId)
+                .ValueGeneratedOnAdd();
+
+            modelBuilder.Entity<RequestModel>()
+                .Property(requestModel => requestModel.RequestId)
+                .ValueGeneratedOnAdd();
+
+            modelBuilder.Entity<RoleModel>().HasData(
+                new RoleModel { RoleId = "1", Name = "Admin" },
+                new RoleModel { RoleId = "2", Name = "Customer" },
+                new RoleModel { RoleId = "3", Name = "Provider" });
+
+            modelBuilder.Entity<UserCompanyModel>().HasData(
+                new UserCompanyModel
+                {
+                    CompanyId = Guid.NewGuid().ToString(),
+                    Name = "Admin Company",
+                    Email = "admin@gmail.com",
+                    RoleId = "1",
+                    PasswordHash = Crypto.HashPassword("qwe123")
+                },
+                new UserCompanyModel
+                {
+                    CompanyId = Guid.NewGuid().ToString(),
+                    Name = "Customer Company",
+                    Email = "customer@gmail.com",
+                    RoleId = "2",
+                    PasswordHash = Crypto.HashPassword("qwe123")
+                },
+                new UserCompanyModel
+                {
+                    CompanyId = Guid.NewGuid().ToString(),
+                    Name = "Provider Company",
+                    Email = "provider@gmail.com",
+                    RoleId = "3",
+                    PasswordHash = Crypto.HashPassword("qwe123")
+                });
         }
 
         private void SeedData()

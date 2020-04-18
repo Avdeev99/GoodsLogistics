@@ -151,20 +151,36 @@ namespace GoodsLogistics.BLL.Services
         }
 
         public ObjectResult RegisterUserCompany(
-            UserCompanyModel userCompany,
+            UserCompanyCreateRequestModel createRequestModel,
             CancellationToken cancellationToken = default)
         {
             var company = _unitOfWork
                 .GetRepository<UserCompanyModel>()
-                .Get(userCompanyModel => userCompanyModel.Email.Equals(userCompany.Email), 
+                .Get(userCompanyModel => userCompanyModel.Email.Equals(createRequestModel.Email), 
                     TrackingState.Disabled);
             if (company != null)
             {
                 var badResult = BadRequestObjectResultFactory.Create(
-                    nameof(userCompany.Email),
+                    nameof(createRequestModel.Email),
                     "User with provided email already exists");
                 return badResult;
             }
+
+            var userRole = _unitOfWork
+                .GetRepository<RoleModel>()
+                .Get(roleModel => roleModel.Name.Equals(createRequestModel.Role.ToString()), TrackingState.Disabled);
+
+            if (userRole == null)
+            {
+                var badResult = BadRequestObjectResultFactory.Create(
+                    nameof(createRequestModel.Email),
+                    "Registration failed.");
+                return badResult;
+            }
+
+            var userCompany = _mapper.Map<UserCompanyModel>(createRequestModel);
+            userCompany.RoleId = userRole.RoleId;
+            userCompany.Role = userRole;
 
             var creationObjectResult = CreateUser(userCompany, cancellationToken);
             if (creationObjectResult.StatusCode != 200)
@@ -189,7 +205,8 @@ namespace GoodsLogistics.BLL.Services
             var userCompany = _unitOfWork.GetRepository<UserCompanyModel>().Get(
                 userCompanyModel => userCompanyModel.Email == loginRequestModel.Email,
                 TrackingState.Enabled,
-                "Offices.City.Region.Country");
+                "Offices.City.Region.Country",
+                "Role");
             if (userCompany != null
                 && Crypto.VerifyHashedPassword(userCompany.PasswordHash, loginRequestModel.Password))
             {

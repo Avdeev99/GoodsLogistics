@@ -19,5 +19,9 @@ namespace GoodsLogistics.Models.DTO.Objective
         public string ReceiverCompanyEmail { get; set; }
 
         public string SenderCompanyEmail { get; set; }
+
+        public bool IsWithoutSender { get; set; }
+
+        public string OnlyNotRequestedByCompanyId { get; set; }
     }
 }

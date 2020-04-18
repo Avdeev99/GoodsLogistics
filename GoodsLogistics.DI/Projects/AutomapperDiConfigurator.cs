@@ -13,7 +13,8 @@ namespace GoodsLogistics.DI.Projects
             {
                 typeof(UserCompanyProfile),
                 typeof(OfficeProfile),
-                typeof(ObjectiveProfile)
+                typeof(ObjectiveProfile),
+                typeof(RequestProfile)
             };
 
             services.AddAutoMapper(automapperProfiles);

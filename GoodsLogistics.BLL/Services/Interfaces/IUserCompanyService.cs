@@ -26,7 +26,7 @@ namespace GoodsLogistics.BLL.Services.Interfaces
             CancellationToken cancellationToken = default);
 
         ObjectResult RegisterUserCompany(
-            UserCompanyModel userCompany,
+            UserCompanyCreateRequestModel userCompany,
             CancellationToken cancellationToken = default);
 
         ObjectResult LoginUserCompany(

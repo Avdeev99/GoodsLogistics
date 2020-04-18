@@ -21,6 +21,14 @@ namespace GoodsLogistics.Automapper.Profiles
             CreateMap<UserCompanyLoginRequestModel, UserCompanyLoginRequestViewModel>();
 
             CreateMap<UserCompanyLoginRequestViewModel, UserCompanyLoginRequestModel>();
+
+            CreateMap<UserCompanyCreateRequestViewModel, UserCompanyCreateRequestModel>().ReverseMap();
+
+            CreateMap<UserCompanyCreateRequestModel, UserCompanyModel>()
+                .ForMember(
+                    dest => dest.PasswordHash,
+                    m => m.MapFrom(s => GetPasswordHash(s.Password)))
+                .ForMember(dest => dest.Role, opt => opt.Ignore());
         }
 
         private string GetPasswordHash(string password)

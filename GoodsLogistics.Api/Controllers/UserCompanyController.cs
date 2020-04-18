@@ -25,10 +25,10 @@ namespace GoodsLogistics.Api.Controllers
 
         [HttpPost("register")]
         public IActionResult CreateUserCompany(
-            [FromBody] UserCompanyViewModel createRequestViewModel,
+            [FromBody] UserCompanyCreateRequestViewModel createRequestViewModel,
             CancellationToken cancellationToken = default)
         {
-            var createRequestModel = _mapper.Map<UserCompanyModel>(createRequestViewModel);
+            var createRequestModel = _mapper.Map<UserCompanyCreateRequestModel>(createRequestViewModel);
             var result = _userCompanyService.RegisterUserCompany(createRequestModel, cancellationToken);
             return result;
         }

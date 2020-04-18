@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using GoodsLogistics.Models.DTO.Location;
 using GoodsLogistics.Models.DTO.UserCompany;
 using GoodsLogistics.Models.Enums;
@@ -32,5 +33,7 @@ namespace GoodsLogistics.Models.DTO
         public LocationModel Location { get; set; }
 
         public decimal Price { get; set; }
+
+        public List<RuleModel> Rules { get; set; }
     }
 }

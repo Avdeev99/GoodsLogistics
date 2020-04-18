@@ -52,15 +52,29 @@ namespace GoodsLogistics.BLL.Services
             Expression<Func<ObjectiveModel, bool>> expression = x => !x.IsRemoved;
             filterExpressions.Add(expression);
 
+            if (!string.IsNullOrEmpty(filteringModel.OnlyNotRequestedByCompanyId))
+            {
+                var objectivesId = _unitOfWork.GetRepository<RequestModel>()
+                    .GetMany(m => m.CompanyId.Equals(filteringModel.OnlyNotRequestedByCompanyId)).Select(m => m.ObjectiveId);
+                expression = m => !objectivesId.Contains(m.ObjectiveId);
+                filterExpressions.Add(expression);
+            }
+
             if (!string.IsNullOrEmpty(filteringModel.ReceiverCompanyEmail))
             {
                 expression = m => m.ReceiverCompany.Email.Equals(filteringModel.ReceiverCompanyEmail);
                 filterExpressions.Add(expression);
             }
 
-            if (!string.IsNullOrEmpty(filteringModel.SenderCompanyEmail))
+            if (!string.IsNullOrEmpty(filteringModel.SenderCompanyEmail) && !filteringModel.IsWithoutSender)
             {
                 expression = m => m.SenderCompany.Email.Equals(filteringModel.SenderCompanyEmail);
+                filterExpressions.Add(expression);
+            }
+
+            if (string.IsNullOrEmpty(filteringModel.SenderCompanyEmail) && filteringModel.IsWithoutSender)
+            {
+                expression = m => string.IsNullOrEmpty(m.SenderCompanyId);
                 filterExpressions.Add(expression);
             }
 
@@ -131,7 +145,8 @@ namespace GoodsLogistics.BLL.Services
                 "SenderCompany.Offices.City.Region.Country",
                 "ReceiverCompany.Offices.City.Region.Country",
                 "Location.City.Region.Country",
-                "Good");
+                "Good",
+                "Rules");
             if (objective == null)
             {
                 var notFoundResult = new NotFoundObjectResult("Objective by provided id not found");

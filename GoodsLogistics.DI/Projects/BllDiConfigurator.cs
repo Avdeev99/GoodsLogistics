@@ -15,6 +15,8 @@ namespace GoodsLogistics.DI.Projects
             services.AddScoped<IObjectiveService, ObjectiveService>();
 
             services.AddScoped<ILocationService, LocationService>();
+
+            services.AddScoped<IRequestService, RequestService>();
         }
     }
 }

@@ -24,7 +24,10 @@ namespace GoodsLogistics.Auth.Tokens
                 new Claim(ClaimTypes.Email, userCompany.Email)
             };
 
-            //if (user.Role != null) claims.Add(new Claim(ClaimTypes.Role, user.Role.Name));
+            if (userCompany.Role != null)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, userCompany.Role.Name));
+            }
 
             return _tokenFactory.Create(claims);
         }

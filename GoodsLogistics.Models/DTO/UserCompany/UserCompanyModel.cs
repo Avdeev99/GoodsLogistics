@@ -15,6 +15,10 @@ namespace GoodsLogistics.Models.DTO.UserCompany
 
         public List<OfficeModel> Offices { get; set; }
 
+        public RoleModel Role { get; set; }
+
+        public string RoleId { get; set; }
+
         public bool IsRemoved { get; set; }
     }
 }
