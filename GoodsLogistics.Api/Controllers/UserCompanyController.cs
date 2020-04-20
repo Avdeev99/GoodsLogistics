@@ -86,5 +86,17 @@ namespace GoodsLogistics.Api.Controllers
         {
             return Ok("Hello");
         }
+
+        [HttpGet("users/requests/objectives/{objectiveId}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public IActionResult GetUserCompaniesByObjectiveId(
+            [FromRoute] string objectiveId,
+            CancellationToken cancellationToken = default)
+        {
+            var result = _userCompanyService.GetUserCompaniesByObjectiveId(
+                objectiveId,
+                cancellationToken);
+            return result;
+        }
     }
 }

@@ -32,5 +32,9 @@ namespace GoodsLogistics.BLL.Services.Interfaces
         ObjectResult LoginUserCompany(
             UserCompanyLoginRequestModel loginRequestModel,
             CancellationToken cancellationToken = default);
+
+        ObjectResult GetUserCompaniesByObjectiveId(
+            string objectiveId,
+            CancellationToken cancellationToken = default);
     }
 }

@@ -10,8 +10,8 @@ namespace GoodsLogistics.Automapper.Profiles
     {
         public RequestProfile()
         {
-            CreateMap<RequestModel, RequestViewModel>();
-            CreateMap<RequestUpdateModel, RequestUpdateViewModel>();
+            CreateMap<RequestModel, RequestViewModel>().ReverseMap();
+            CreateMap<RequestUpdateModel, RequestUpdateViewModel>().ReverseMap();
         }
     }
 }

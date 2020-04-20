@@ -7,6 +7,7 @@ using GoodsLogistics.Auth.Tokens.Interfaces;
 using GoodsLogistics.BLL.Helpers;
 using GoodsLogistics.BLL.Services.Interfaces;
 using GoodsLogistics.DAL.UOF.Interfaces;
+using GoodsLogistics.Models.DTO;
 using GoodsLogistics.Models.DTO.UserCompany;
 using GoodsLogistics.Models.Enums;
 using GoodsLogistics.ViewModels.DTO;
@@ -80,9 +81,13 @@ namespace GoodsLogistics.BLL.Services
                 return badResult;
             }
 
-            var r = _unitOfWork.GetRepository<UserCompanyModel>();
             userCompany = _unitOfWork.GetRepository<UserCompanyModel>().Create(userCompany);
             _unitOfWork.Save();
+
+            var userRole = _unitOfWork
+                .GetRepository<RoleModel>()
+                .Get(roleModel => roleModel.RoleId.Equals(userCompany.RoleId), TrackingState.Disabled);
+            userCompany.Role = userRole;
             var userCompanyViewModel = _mapper.Map<UserCompanyViewModel>(userCompany);
 
             var result = new OkObjectResult(userCompanyViewModel);
@@ -180,7 +185,6 @@ namespace GoodsLogistics.BLL.Services
 
             var userCompany = _mapper.Map<UserCompanyModel>(createRequestModel);
             userCompany.RoleId = userRole.RoleId;
-            userCompany.Role = userRole;
 
             var creationObjectResult = CreateUser(userCompany, cancellationToken);
             if (creationObjectResult.StatusCode != 200)
@@ -188,6 +192,7 @@ namespace GoodsLogistics.BLL.Services
                 return creationObjectResult;
             }
 
+            userCompany.Role = userRole;
             var token = _tokenProvider.GenerateTokenForUser(userCompany);
 
             var authResult = new AuthResultViewModel(
@@ -226,6 +231,26 @@ namespace GoodsLogistics.BLL.Services
             var badAuthResult = new AuthResultViewModel(errors);
             var badResult = new ObjectResult(badAuthResult);
             return badResult;
+        }
+
+        public ObjectResult GetUserCompaniesByObjectiveId(
+            string objectiveId, 
+            CancellationToken cancellationToken = default)
+        {
+            var userCompaniesId = _unitOfWork.GetRepository<RequestModel>()
+                .GetMany(m => m.ObjectiveId.Equals(objectiveId)).Select(m => m.CompanyId);
+
+            var userCompanies = _unitOfWork.GetRepository<UserCompanyModel>()
+                .GetMany(
+                    userCompanyModel => !userCompanyModel.IsRemoved && userCompaniesId.Contains(userCompanyModel.CompanyId),
+                    null,
+                    TrackingState.Disabled,
+                    "Offices.City.Region.Country")
+                .ToList();
+            var userCompaniesViewModels = _mapper.Map<List<UserCompanyViewModel>>(userCompanies);
+
+            var result = new OkObjectResult(userCompaniesViewModels);
+            return result;
         }
     }
 }

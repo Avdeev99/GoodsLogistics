@@ -4,12 +4,14 @@ using GoodsLogistics.BLL.Services.Interfaces;
 using GoodsLogistics.Models.DTO;
 using GoodsLogistics.Models.DTO.Request;
 using GoodsLogistics.ViewModels.DTO;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GoodsLogistics.Api.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class RequestController : ControllerBase
     {
         private readonly IRequestService _requestService;
@@ -40,7 +42,7 @@ namespace GoodsLogistics.Api.Controllers
         }
 
         [HttpPost("requests")]
-        public IActionResult CreateOffice(
+        public IActionResult CreateRequest(
             [FromBody] RequestViewModel requestViewModel,
             CancellationToken cancellationToken = default)
         {

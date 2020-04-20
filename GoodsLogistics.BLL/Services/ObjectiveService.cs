@@ -181,17 +181,25 @@ namespace GoodsLogistics.BLL.Services
                 objectiveModel => objectiveModel.ObjectiveId == id,
                 TrackingState.Enabled,
                 "SenderCompany.Offices.City.Region.Country",
-                "ReceiverCompany.Offices.City.Region.Country");
+                "ReceiverCompany.Offices.City.Region.Country",
+                "Rules");
             if (objective == null)
             {
                 var notFoundResult = new NotFoundObjectResult("Objective by provided id not found");
                 return notFoundResult;
             }
 
-            objective.ReceiverCompanyId = updateRequestModel.ReceiverCompanyId;
+            objective.SenderCompanyId = updateRequestModel.SenderCompanyId;
+            objective.Frequency = updateRequestModel.Frequency;
             objective.EndDate = updateRequestModel.EndDate == default(DateTime)
                 ? objective.EndDate
                 : updateRequestModel.EndDate;
+
+            objective.OrderDate = updateRequestModel.OrderDate == default(DateTime)
+                ? objective.EndDate
+                : updateRequestModel.OrderDate;
+            objective.Rules.Clear();
+            objective.Rules = updateRequestModel.Rules;
             _unitOfWork.Save();
 
             var objectiveViewModel = _mapper.Map<ObjectiveViewModel>(objective);
