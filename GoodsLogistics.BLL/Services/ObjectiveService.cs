@@ -189,7 +189,22 @@ namespace GoodsLogistics.BLL.Services
                 return notFoundResult;
             }
 
-            objective.SenderCompanyId = updateRequestModel.SenderCompanyId;
+            if (!string.IsNullOrEmpty(updateRequestModel.SenderCompanyId))
+            {
+                objective.SenderCompanyId = updateRequestModel.SenderCompanyId;
+                var requests = _unitOfWork.GetRepository<RequestModel>().GetMany(
+                    m => m.ObjectiveId.Equals(id), 
+                    null, 
+                    TrackingState.Enabled);
+
+                foreach (var request in requests)
+                {
+                    request.Status = request.CompanyId.Equals(updateRequestModel.SenderCompanyId) 
+                        ? RequestStatus.Accepted 
+                        : RequestStatus.Declined;
+                }
+            }
+            
             objective.Frequency = updateRequestModel.Frequency;
             objective.EndDate = updateRequestModel.EndDate == default(DateTime)
                 ? objective.EndDate

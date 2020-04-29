@@ -1,4 +1,6 @@
-﻿using AutoMapper;
+﻿using System;
+using System.IO;
+using AutoMapper;
 using GoodsLogistics.BLL.Services.Interfaces;
 using GoodsLogistics.Models.DTO.UserCompany;
 using GoodsLogistics.ViewModels.DTO;
@@ -6,6 +8,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading;
+using GoodsLogistics.DAL;
+using Microsoft.AspNetCore.Hosting;
 
 namespace GoodsLogistics.Api.Controllers
 {
@@ -13,14 +17,17 @@ namespace GoodsLogistics.Api.Controllers
     public class UserCompanyController : ControllerBase
     {
         private readonly IUserCompanyService _userCompanyService;
+        private readonly IHostingEnvironment _hostingEnvironment;
         private readonly IMapper _mapper;
 
         public UserCompanyController(
             IUserCompanyService userCompanyService,
-            IMapper mapper)
+            IMapper mapper, 
+            IHostingEnvironment hostingEnvironment)
         {
             _userCompanyService = userCompanyService;
             _mapper = mapper;
+            _hostingEnvironment = hostingEnvironment;
         }
 
         [HttpPost("register")]
@@ -97,6 +104,16 @@ namespace GoodsLogistics.Api.Controllers
                 objectiveId,
                 cancellationToken);
             return result;
+        }
+
+        [HttpGet("database/backUp")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public IActionResult DatabaseBackUp(CancellationToken cancellationToken = default)
+        {
+            var folderPath = Path.Combine(_hostingEnvironment.WebRootPath, "backups");
+            var fullPath = Path.Combine(folderPath, $"backUp-{DateTime.UtcNow.ToString("yyyy_MM_dd_hh_mm_ss")}.bak");
+            DatabaseFunctions.Backup("GoodsLogisticsDb", fullPath);
+            return Ok();
         }
     }
 }
